@@ -5,7 +5,7 @@
 package javafx;
 
 //public class Product implements Offer , Available{
-public class Product {
+public class Product implements Comparable<Product> {
     
     private int ID;
     private String name;
@@ -85,6 +85,13 @@ public class Product {
     
      public String toString() { // Override toString to display the product name and price in the cart ListView
         return name + " - $" + price;
+    }
+
+    @Override
+    public int compareTo(Product o) {
+        if (this.getPrice()>o.getPrice()) return 1;
+        else if (this.getPrice()<o.getPrice()) return -1;
+        return 0;
     }
 
 }
