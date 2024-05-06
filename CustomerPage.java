@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CustomerPage extends Application {
@@ -27,6 +28,12 @@ public class CustomerPage extends Application {
     private List<Product> products = new ArrayList<>();
     private List<Product> cart = new ArrayList<>();
     private Customer currentUser; // The current logged in user
+    
+    public CustomerPage(){
+        for(int z=0; z<SystemManager.getProductNo();z++){
+            products.add(SystemManager.getProducts()[z]);
+        }
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -35,9 +42,7 @@ public class CustomerPage extends Application {
         // Add some products
         
         
-        for(int z=0; z<SystemManager.getProductNo();z++){
-            products.add(SystemManager.getProducts()[z]);
-        }
+        
 
         
         ListView<Product> productListView = new ListView<>();
@@ -136,9 +141,17 @@ public class CustomerPage extends Application {
                 ex.printStackTrace();
             }
         });
+        
+        Button sortb= new Button("Sort with price");
+        sortb.setOnAction(e -> {
+            Collections.sort(products);
+            start(primaryStage);
+        });
 
-        HBox hBox1 = new HBox(addButton, showSpecsButton); // First row of buttons
+        HBox hBox1 = new HBox(addButton, showSpecsButton,sortb); // First row of buttons
+        hBox1.setSpacing(5);
         HBox hBox2 = new HBox(showUserInfoButton, signOutButton); // Second row of buttons
+        hBox2.setSpacing(5);
 
         VBox vBox = new VBox(productListView, hBox1, hBox2, cartListView); // Add the new buttons to the layout
         Scene scene = new Scene(vBox, 1000, 500);
