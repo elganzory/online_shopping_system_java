@@ -69,11 +69,16 @@ public class Product implements Comparable<Product> , IsAvailable {
     public void setStock(int stock) {
         this.stock = stock;
     }
-        
-    public void set_discount(double discount) {
-        this.offerpercent=discount;
-        setPrice (price - price*(offerpercent/100));
+
+    public double getOfferpercent() {
+        return offerpercent;
     }
+
+    public void setOfferpercent(double offerpercent) {
+        this.offerpercent = offerpercent;
+    }
+        
+    
 	
     public boolean IsAvailable() {
         if(stock==0){

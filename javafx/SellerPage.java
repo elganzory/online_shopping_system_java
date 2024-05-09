@@ -52,12 +52,12 @@ public class SellerPage extends Application {
         descriptionCol.setMinWidth(150);
         descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
         
-        /*TableColumn<Product, Double> discountCol = new TableColumn<>("Discount (%)");
+        TableColumn<Product, Double> discountCol = new TableColumn<>("Discount (%)");
         discountCol.setMinWidth(50);
-        discountCol.setCellValueFactory(new PropertyValueFactory<>("offerPercent"));*/
+        discountCol.setCellValueFactory(new PropertyValueFactory<>("offerpercent"));
 
         table.setItems(data);
-        table.getColumns().addAll(nameCol, descriptionCol,priceCol, stockCol, imageURLCol);
+        table.getColumns().addAll(nameCol, descriptionCol,priceCol, stockCol, imageURLCol, discountCol);
         data.addAll(vendorProducts);
 
         // Buttons
