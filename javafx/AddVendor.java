@@ -22,14 +22,14 @@ public class AddVendor extends Stage {
         Text text2=new Text("Seller Email");
        
         TextField nameField=new TextField();
-        TextField EmailField=new TextField();
+        TextField passwordfield=new TextField();
         
         Button but1=new Button("Add Seller");
         but1.setOnAction(e -> {
             String username = nameField.getText();
-            String Email = EmailField.getText();
+            String password = passwordfield.getText();
 
-            if(username == null || username.trim().isEmpty() || Email == null || Email.trim().isEmpty()) {
+            if(username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
                 showAlert("Username and Email fields cannot be empty");
                 return;
             }
@@ -39,7 +39,7 @@ public class AddVendor extends Stage {
                         showAlert("This user is already a vendor");
                         return;                     
             }}}
-            SystemManager.addUser(new Vendor(username,Email));
+            SystemManager.addUser(new Vendor(username,password));
             AdminPage adminPage=new AdminPage();
             adminPage.show();
             close();
@@ -51,7 +51,7 @@ public class AddVendor extends Stage {
         pane.add(text1,0,0);
         pane.add(text2,0,1);
         pane.add(nameField,1,0);
-        pane.add(EmailField,1,1);
+        pane.add(passwordfield,1,1);
         pane.add(but1,0,4);
         pane.setHgap(10);
         pane.setVgap(5);

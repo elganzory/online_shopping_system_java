@@ -49,7 +49,7 @@ public class AdminPage extends Stage {
         Label productsLabel = new Label("Products");
         productsLabel.setFont(Font.font(16)); // Set font size to 1.5 times bigger
 
-        Label usersLabel = new Label("Users");
+        Label usersLabel = new Label("Vendors");
         usersLabel.setFont(Font.font(16)); // Set font size to 1.5 times bigger
 
         // Create button for adding user
@@ -60,7 +60,9 @@ public class AdminPage extends Stage {
         });
         
         Button showOrders=new Button("Show Orders");
-        showOrders.setOnAction((e)->{SystemManager.OrdersGUI();});
+        showOrders.setOnAction((e)->{
+            OrdersGUI ordergui=new OrdersGUI();
+            ordergui.start(new Stage());});
         // Create layout for footer
         Button signOut=new Button("sign out");
         signOut.setOnAction(e ->{

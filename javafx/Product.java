@@ -5,7 +5,7 @@
 package javafx;
 
 //public class Product implements Offer , Available{
-public class Product {
+public class Product implements Comparable<Product> , IsAvailable {
     
     private int ID;
     private String name;
@@ -16,13 +16,14 @@ public class Product {
     private String ImageURL;
 
     
-    public Product( String name, double price, int stock, String ImageURL) {
-       // this.ID = ID;
+    public Product( String name, double price, int stock, String ImageURL,String Description,double offerpercent) {
+       this.ID = ID=SystemManager.getProductNo()+1;;
         this.name = name;
-       // this.Description = Description;
-        this.price = price;
+        this.Description = Description;
+        this.price = price-price*(offerpercent/100);
         this.stock=stock;
         this.ImageURL=ImageURL;
+        this.offerpercent=offerpercent;
     }
     
     public int getID() {
@@ -68,11 +69,16 @@ public class Product {
     public void setStock(int stock) {
         this.stock = stock;
     }
-        
-    public void set_discount(double discount) {
-        this.offerpercent=discount;
-        setPrice (price - price*(offerpercent/100));
+
+    public double getOfferpercent() {
+        return offerpercent;
     }
+
+    public void setOfferpercent(double offerpercent) {
+        this.offerpercent = offerpercent;
+    }
+        
+    
 	
     public boolean IsAvailable() {
         if(stock==0){
@@ -85,6 +91,13 @@ public class Product {
     
      public String toString() { // Override toString to display the product name and price in the cart ListView
         return name + " - $" + price;
+    }
+
+    @Override
+    public int compareTo(Product o) {
+        if (this.getPrice()>o.getPrice()) return 1;
+        else if (this.getPrice()<o.getPrice()) return -1;
+        return 0;
     }
 
 }

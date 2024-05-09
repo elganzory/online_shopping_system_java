@@ -4,6 +4,8 @@
  */
 package javafx;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,24 +22,37 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 
 public class CustomerPage extends Application {
 
     private List<Product> products = new ArrayList<>();
     private List<Product> cart = new ArrayList<>();
     private Customer currentUser; // The current logged in user
+    
+    public CustomerPage(){
+        for(int z=0; z<SystemManager.getProductNo();z++){
+            products.add(SystemManager.getProducts()[z]);
+        }
+    }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage){
         primaryStage.setTitle("Online Shopping System - Customer Page");
 
         // Add some products
         
         
-        for(int z=0; z<SystemManager.getProductNo();z++){
-            products.add(SystemManager.getProducts()[z]);
-        }
+        
 
         
         ListView<Product> productListView = new ListView<>();
@@ -48,13 +63,18 @@ public class CustomerPage extends Application {
                     private ImageView imageView = new ImageView();
 
                     @Override
-                    protected void updateItem(Product item, boolean empty) {
+                    protected void updateItem(Product item, boolean empty){
                         super.updateItem(item, empty);
                         if (empty || item == null) {
                             setText(null);
                             setGraphic(null);
                         } else {
-                            Image image = new Image(item.getImageURL());
+                            Image image=null;
+                            try {
+                                image = new Image(new FileInputStream(item.getImageURL()));
+                            } catch (FileNotFoundException ex) {
+                                Logger.getLogger(CustomerPage.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                             imageView.setImage(image);
                             imageView.setFitHeight(50); // set height
                             imageView.setFitWidth(50);  // set width
@@ -74,12 +94,18 @@ public class CustomerPage extends Application {
         
         Button addButton = new Button("Add to Cart");
         addButton.setOnAction(e -> {
-            Product selectedProduct = productListView.getSelectionModel().getSelectedItem();
-            if (selectedProduct != null) {
-                
-                Login_page.getUser().getOrder().additem(selectedProduct);
-                cartListView.getItems().add(selectedProduct); // Add the product to the cart ListView
-                System.out.println(Login_page.getUser().getOrder().displayAllProducts());
+            try{
+                Product selectedProduct = productListView.getSelectionModel().getSelectedItem();
+                if (selectedProduct != null) {
+                    if (selectedProduct.getStock()<= 0) {
+                        throw new IllegalStateException("Product stock is empty");
+                    }
+                    Login_page.getUser().getOrder().additem(selectedProduct);
+                    cartListView.getItems().add(selectedProduct); 
+                    selectedProduct.setStock(selectedProduct.getStock()-1);
+                }
+            }catch (IllegalStateException ex) {
+                Login_page.showAlert("out of stock");
             }
         });
 
@@ -87,7 +113,31 @@ public class CustomerPage extends Application {
         showSpecsButton.setOnAction(e -> {
             Product selectedProduct = productListView.getSelectionModel().getSelectedItem();
             if (selectedProduct != null) {
-                System.out.println("Showing specs for: " + selectedProduct);
+                Stage specstage= new Stage();
+                Label l= new Label(selectedProduct.getDescription());
+                FileInputStream fis=null;
+                try {
+                    fis = new FileInputStream(selectedProduct.getImageURL());
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(CustomerPage.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                ImageView img=new ImageView(new Image(fis));
+                img.setPreserveRatio(true);
+                img.setFitHeight(150);
+                img.setFitWidth(200);
+                HBox hbox=new HBox();
+                hbox.setPadding(new Insets(10));
+                hbox.setSpacing(10);
+                VBox vbox=new VBox();
+                vbox.setSpacing(20);
+                vbox.setAlignment(Pos.TOP_CENTER);
+                vbox.setBackground(new Background(new BackgroundFill(Color.WHITE,CornerRadii.EMPTY, Insets.EMPTY)));
+                vbox.getChildren().addAll(img,new Label("price : $"+selectedProduct.getPrice()),new Label("stock : "+selectedProduct.getStock()));
+                hbox.getChildren().addAll(vbox,l);
+                Scene specscene=new Scene(hbox,400,300);
+                specstage.setScene(specscene);
+                specstage.setTitle(selectedProduct.getName());
+                specstage.show();
             }
         });
 
@@ -136,13 +186,20 @@ public class CustomerPage extends Application {
                 ex.printStackTrace();
             }
         });
+        
+        Button sortb= new Button("Sort with price");
+        sortb.setOnAction(e -> {
+            Collections.sort(products);
+            start(primaryStage);
+        });
 
-        HBox hBox1 = new HBox(addButton, showSpecsButton); // First row of buttons
+        HBox hBox1 = new HBox(addButton, showSpecsButton,sortb); // First row of buttons
+        hBox1.setSpacing(5);
         HBox hBox2 = new HBox(showUserInfoButton, signOutButton); // Second row of buttons
+        hBox2.setSpacing(5);
 
         VBox vBox = new VBox(productListView, hBox1, hBox2, cartListView); // Add the new buttons to the layout
         Scene scene = new Scene(vBox, 1000, 500);
-
         primaryStage.setScene(scene);
         primaryStage.show();
     }

@@ -8,12 +8,13 @@ package javafx;
  *
  * @author genzoo
  */
-public class Order {
+public class Order implements Comparable<Order> {
     private int id;
     Product products[]= new Product[10] ;
     int NumOfItems=0;
 
     public Order() {
+        id=SystemManager.getOrderNo()+1;
     }
 
     public int getId() {
@@ -49,13 +50,32 @@ public class Order {
         }
         return price;
     }
-    public String displayAllProducts()
-    {
-        String temp="";
+    public String[] getProductsID(){
+        String s[]=new String[NumOfItems];
         for (int i=0;i<NumOfItems;i++){
-            temp=temp+"Product ID: "+products[i].getID()+"    Product name: "+products[i].getName()+"     Product Price: "+products[i].getPrice()+"$\n";
+            s[i]=Integer.toString(products[i].getID());
         }
-        temp=temp+"\n\nTOTAL COST = "+getTotalCost()+"$";
-        return temp;
+        return s;
+    }
+    public String[] getProductsName(){
+        String s[]=new String[NumOfItems];
+        for (int i=0;i<NumOfItems;i++){
+            s[i]=products[i].getName();
+        }
+        return s;
+    }
+    public String[] getProductsPrice(){
+        String s[]=new String[NumOfItems];
+        for (int i=0;i<NumOfItems;i++){
+            s[i]=Double.toString(products[i].getPrice());
+        }
+        return s;
+    }
+
+    @Override
+    public int compareTo(Order o) {
+        if (this.getTotalCost()>o.getTotalCost()) return 1;
+        else if (this.getTotalCost()<o.getTotalCost()) return -1;
+        return 0;
     }
 }

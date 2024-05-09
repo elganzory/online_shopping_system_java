@@ -16,6 +16,7 @@ public class User {
     public User(String Name, String Password) {
         this.Name = Name;
         this.Password = Password;
+        ID=SystemManager.getUserNo()+1;
     }
     
     
