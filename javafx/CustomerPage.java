@@ -94,12 +94,18 @@ public class CustomerPage extends Application {
         
         Button addButton = new Button("Add to Cart");
         addButton.setOnAction(e -> {
-            Product selectedProduct = productListView.getSelectionModel().getSelectedItem();
-            if (selectedProduct != null) {
-                
-                Login_page.getUser().getOrder().additem(selectedProduct);
-                cartListView.getItems().add(selectedProduct); // Add the product to the cart ListView
-                //System.out.println(Login_page.getUser().getOrder().displayAllProducts());
+            try{
+                Product selectedProduct = productListView.getSelectionModel().getSelectedItem();
+                if (selectedProduct != null) {
+                    if (selectedProduct.getStock()<= 0) {
+                        throw new IllegalStateException("Product stock is empty");
+                    }
+                    Login_page.getUser().getOrder().additem(selectedProduct);
+                    cartListView.getItems().add(selectedProduct); 
+                    selectedProduct.setStock(selectedProduct.getStock()-1);
+                }
+            }catch (IllegalStateException ex) {
+                Login_page.showAlert("out of stock");
             }
         });
 

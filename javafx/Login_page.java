@@ -33,7 +33,7 @@ public class Login_page extends Application{
     
     
     @Override
-    public void start(Stage Primarystage) throws Exception {
+    public void start(Stage Primarystage) {
         
            
        Text text1=new Text("username");
@@ -120,7 +120,7 @@ public class Login_page extends Application{
         Primarystage.show();  
     }
 
-    private void showAlert(String message) {
+    public static void showAlert(String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText(null);
@@ -133,9 +133,9 @@ public class Login_page extends Application{
         SystemManager.addUser(new Admin("yousef","yousef"));
         SystemManager.addUser(new Vendor("khaled","khaled"));
         SystemManager.addUser(new Vendor("mark","mark"));
-        SystemManager.addProduct(new Product("Product 1", 39.99, 50, "src\\images\\photo-1505740420928-5e560c06d30e.jpeg",""));
-        SystemManager.addProduct(new Product("Product 2", 19.99, 50, "src\\images\\tmp.jpg", ""));
-        SystemManager.addProduct(new Product("Product 3", 29.99, 50, "src\\images\\tmp (1).jpg", ""));
+        SystemManager.addProduct(new Product("Product 1", 39.99, 50, "src\\images\\photo-1505740420928-5e560c06d30e.jpeg","",0));
+        SystemManager.addProduct(new Product("Product 2", 19.99, 50, "src\\images\\tmp.jpg", "",0));
+        SystemManager.addProduct(new Product("Product 3", 29.99, 50, "src\\images\\tmp (1).jpg", "",0));
         launch(args);
     }
 

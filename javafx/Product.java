@@ -5,7 +5,7 @@
 package javafx;
 
 //public class Product implements Offer , Available{
-public class Product implements Comparable<Product> {
+public class Product implements Comparable<Product> , IsAvailable {
     
     private int ID;
     private String name;
@@ -16,13 +16,14 @@ public class Product implements Comparable<Product> {
     private String ImageURL;
 
     
-    public Product( String name, double price, int stock, String ImageURL,String Description) {
+    public Product( String name, double price, int stock, String ImageURL,String Description,double offerpercent) {
        this.ID = ID=SystemManager.getProductNo()+1;;
         this.name = name;
         this.Description = Description;
-        this.price = price;
+        this.price = price-price*(offerpercent/100);
         this.stock=stock;
         this.ImageURL=ImageURL;
+        this.offerpercent=offerpercent;
     }
     
     public int getID() {

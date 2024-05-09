@@ -156,7 +156,9 @@ public class SellerPage extends Application {
                         Double.parseDouble(priceField.getText()),
                         Integer.parseInt(stockField.getText()),
                         imageURLField.getText(),
-                        descriptionField.getText()
+                        descriptionField.getText(),
+                        Double.parseDouble(discountField.getText())
+
                 );
             }
             return null;

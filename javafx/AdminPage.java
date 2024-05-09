@@ -49,7 +49,7 @@ public class AdminPage extends Stage {
         Label productsLabel = new Label("Products");
         productsLabel.setFont(Font.font(16)); // Set font size to 1.5 times bigger
 
-        Label usersLabel = new Label("Users");
+        Label usersLabel = new Label("Vendors");
         usersLabel.setFont(Font.font(16)); // Set font size to 1.5 times bigger
 
         // Create button for adding user
