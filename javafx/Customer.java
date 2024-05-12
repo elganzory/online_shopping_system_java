@@ -28,9 +28,31 @@ private Order order;
         return Email;
     }
 
+    public void setEmail(String Email) {
+        this.Email = Email;
+    }
+    
+
     public Order getOrder() {
         return order;
     }
+
+    public String getPhone() {
+        return Phone;
+    }
+
+    public void setPhone(String Phone) {
+        this.Phone = Phone;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String Address) {
+        this.Address = Address;
+    }
+    
     
     
     

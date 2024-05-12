@@ -5,18 +5,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static javafx.application.Application.launch;
 
 
 

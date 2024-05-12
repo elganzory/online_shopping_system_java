@@ -1,9 +1,8 @@
 
 package javafx;
 
+import java.io.FileNotFoundException;
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -11,7 +10,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -123,17 +121,17 @@ public class Login_page extends Application{
         alert.showAndWait();
     }
     
-    public static void main(String[] args) throws EmptyStringException {
+    public static void main(String[] args) throws EmptyStringException,FileNotFoundException {
         SystemManager.addUser(new Admin("admin","admin"));
         SystemManager.addUser(new Admin("yousef","yousef"));
         SystemManager.addUser(new Vendor("khaled","khaled"));
         SystemManager.addUser(new Vendor("mark","mark"));
-        SystemManager.addProduct(new Product("Product 1", 39.99, 50, "src\\images\\photo-1505740420928-5e560c06d30e.jpeg","",0));
-        SystemManager.addProduct(new Product("Product 2", 19.99, 50, "src\\images\\tmp.jpg", "",0));
-        SystemManager.addProduct(new Product("Product 3", 29.99, 50, "src\\images\\tmp (1).jpg", "",0));
+        SystemManager.addProduct(new Product("Product 1", 39.99, 50, "src\\images\\photo-1505740420928-5e560c06d30e.jpeg","m",0));
+        SystemManager.addProduct(new Product("Product 2", 19.99, 50, "src\\images\\tmp.jpg", "m",0));
+        SystemManager.addProduct(new Product("Product 3", 29.99, 50, "src\\images\\tmp (1).jpg", "m",0));
         launch(args);
     }
-
+//
 }
 
 

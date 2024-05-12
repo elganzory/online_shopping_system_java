@@ -3,8 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package javafx;
-
+//
 //public class Product implements Offer , Available{
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import javafx.scene.image.Image;
+
 public class Product implements Comparable<Product> , IsAvailable  {
     
     private int ID;
@@ -14,17 +19,19 @@ public class Product implements Comparable<Product> , IsAvailable  {
     private double offerpercent;
     private int stock;
     private String ImageURL;
-
+    private Image img;
     
-    public Product( String name, double price, int stock, String ImageURL,String Description,double offerpercent){
-        
-       this.ID = ID=SystemManager.getProductNo()+1;;
+    public Product( String name, double price, int stock, String ImageURL,String Description,double offerpercent) throws EmptyStringException, FileNotFoundException{
+        if(name.trim().isEmpty() || ImageURL.trim().isEmpty() || Description.trim().isEmpty())
+            throw new EmptyStringException("");
+       this.ID = ID=SystemManager.getProductNo()+1;
         this.name = name;
         this.Description = Description;
         this.price = price-price*(offerpercent/100);
         this.stock=stock;
         this.ImageURL=ImageURL;
         this.offerpercent=offerpercent;
+        this.img= new Image(new FileInputStream(ImageURL));
     }
     
     public int getID() {
@@ -78,6 +85,11 @@ public class Product implements Comparable<Product> , IsAvailable  {
     public void setOfferpercent(double offerpercent) {
         this.offerpercent = offerpercent;
     }
+
+    public Image getImg() {
+        return img;
+    }
+    
         
     
 	

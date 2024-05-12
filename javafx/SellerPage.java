@@ -1,4 +1,5 @@
 package javafx;
+import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -62,7 +63,98 @@ public class SellerPage extends Application {
 
         // Buttons
         Button addButton = new Button("Add");
-        addButton.setOnAction(e -> showAddProductDialog());
+        addButton.setOnAction(e -> {
+            Stage AddProduct = new Stage();
+            AddProduct.setTitle("ADD a Product");
+
+            // Create a grid pane and add the labels and text fields
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new Insets(20)); // Adds padding around the grid
+
+            // Create and configure text fields
+            TextField nameField = new TextField();
+            nameField.setPromptText("Product Name");
+            nameField.setMinWidth(300); // Set minimum width for the text field
+
+            TextArea descriptionField = new TextArea();
+            descriptionField.setPromptText("Description");
+            descriptionField.setMinWidth(300); // Ensure all fields have consistent width
+            descriptionField.setMaxWidth(300);
+
+            TextField priceField = new TextField();
+            priceField.setPromptText("Price");
+            priceField.setMinWidth(300);
+
+            TextField stockField = new TextField();
+            stockField.setPromptText("Stock");
+            stockField.setMinWidth(300);
+
+            TextField imageURLField = new TextField();
+            imageURLField.setPromptText("Image URL");
+            imageURLField.setMinWidth(300);
+
+            TextField discountField = new TextField();
+            discountField.setPromptText("Discount (%)");
+            discountField.setMinWidth(300);
+            
+            
+            Button addProduct = new Button("Add Product");
+            addProduct.setOnAction(ex ->{
+                try{
+                    Product product=new Product( 
+                        nameField.getText(),
+                        Double.parseDouble(priceField.getText()),
+                        Integer.parseInt(stockField.getText()),
+                        imageURLField.getText(),
+                        descriptionField.getText(),
+                        Double.parseDouble(discountField.getText()));
+                    data.add(product);
+                    SystemManager.addProduct(product);
+                    ((Vendor)Login_page.getUser()).addProduct(product);
+                    AddProduct.close();
+                        
+                    
+                }catch(EmptyStringException as){
+                    Login_page.showAlert("Data Fields can't be empty");
+                }
+                
+                catch(NumberFormatException ec){
+                    Login_page.showAlert("invalid input");
+                }
+                catch(FileNotFoundException f){
+                    Login_page.showAlert("Image URL is not Valid");
+                }
+            });
+            
+            
+            // Add fields and labels to the grid
+            grid.add(new Label("Product Name:"), 0, 0);
+            grid.add(nameField, 1, 0);
+            grid.add(new Label("Description:"), 0, 1);
+            grid.add(descriptionField, 1, 1);
+            grid.add(new Label("Price:"), 0, 2);
+            grid.add(priceField, 1, 2);
+            grid.add(new Label("Stock:"), 0, 3);
+            grid.add(stockField, 1, 3);
+            grid.add(new Label("Image URL:"), 0, 4);
+            grid.add(imageURLField, 1, 4);
+            grid.add(new Label("Discount (%):"), 0, 5);
+            grid.add(discountField, 1, 5);
+            grid.add(addProduct, 1, 6);
+            
+            
+            
+
+                // Add other fields to the grid pane here...
+
+                // Create a scene and set it on the stage
+                Scene scene = new Scene(grid, 450, 300);
+                AddProduct.setScene(scene);
+                AddProduct.show();
+            
+        });
 
         Button deleteButton = new Button("Delete");
         deleteButton.setOnAction(e -> {
@@ -94,84 +186,6 @@ public class SellerPage extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
-    private void showAddProductDialog() {
-        Dialog<Product> dialog = new Dialog<>();
-        dialog.setTitle("Add New Product");
-
-        // GridPane for input fields
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(20, 150, 10, 10)); // Adds padding around the grid
-
-        // Create and configure text fields
-        TextField nameField = new TextField();
-        nameField.setPromptText("Product Name");
-        nameField.setMinWidth(300); // Set minimum width for the text field
-
-        TextField descriptionField = new TextField();
-        descriptionField.setPromptText("Description");
-        descriptionField.setMinWidth(300); // Ensure all fields have consistent width
-
-        TextField priceField = new TextField();
-        priceField.setPromptText("Price");
-        priceField.setMinWidth(300);
-
-        TextField stockField = new TextField();
-        stockField.setPromptText("Stock");
-        stockField.setMinWidth(300);
-
-        TextField imageURLField = new TextField();
-        imageURLField.setPromptText("Image URL");
-        imageURLField.setMinWidth(300);
-
-        TextField discountField = new TextField();
-        discountField.setPromptText("Discount (%)");
-        discountField.setMinWidth(300);
-
-        // Add fields and labels to the grid
-        grid.add(new Label("Product Name:"), 0, 0);
-        grid.add(nameField, 1, 0);
-        grid.add(new Label("Description:"), 0, 1);
-        grid.add(descriptionField, 1, 1);
-        grid.add(new Label("Price:"), 0, 2);
-        grid.add(priceField, 1, 2);
-        grid.add(new Label("Stock:"), 0, 3);
-        grid.add(stockField, 1, 3);
-        grid.add(new Label("Image URL:"), 0, 4);
-        grid.add(imageURLField, 1, 4);
-        grid.add(new Label("Discount (%):"), 0, 5);
-        grid.add(discountField, 1, 5);
-
-        // Set content and buttons of dialog
-        dialog.getDialogPane().setContent(grid);
-        ButtonType addButton = new ButtonType("Add Product", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(addButton, ButtonType.CANCEL);
-
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == addButton) {
-                return new Product(
-                        nameField.getText(),
-                        Double.parseDouble(priceField.getText()),
-                        Integer.parseInt(stockField.getText()),
-                        imageURLField.getText(),
-                        descriptionField.getText(),
-                        Double.parseDouble(discountField.getText())
-
-                );
-            }
-            return null;
-        });
-
-        dialog.showAndWait().ifPresent(product -> {
-            data.add(product);
-            SystemManager.addProduct(product);
-            ((Vendor)Login_page.getUser()).addProduct(product);
-        });
-    }
-    public static void main(String[] args){
-        Application.launch(args);
-    }
+    //
 }
 

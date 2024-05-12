@@ -1,15 +1,12 @@
 package javafx;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 
 
@@ -21,7 +18,7 @@ public class AddVendor extends Stage {
 
 	public AddVendor() {
         Text text1=new Text("Seller Name");
-        Text text2=new Text("Seller Email");
+        Text text2=new Text("Seller Password");
        
         TextField nameField=new TextField();
         TextField passwordfield=new TextField();

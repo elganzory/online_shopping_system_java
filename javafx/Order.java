@@ -42,9 +42,9 @@ public class Order implements Comparable<Order> {
         products[NumOfItems]=p;
         NumOfItems++;
     }
-    public int getTotalCost()
+    public double getTotalCost()
     {
-        int price=0;
+        double price=0;
         for (int i=0;i<NumOfItems;i++){
             price+=products[i].getPrice();
         }

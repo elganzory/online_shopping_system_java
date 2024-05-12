@@ -69,13 +69,7 @@ public class CustomerPage extends Application {
                             setText(null);
                             setGraphic(null);
                         } else {
-                            Image image=null;
-                            try {
-                                image = new Image(new FileInputStream(item.getImageURL()));
-                            } catch (FileNotFoundException ex) {
-                                Logger.getLogger(CustomerPage.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            imageView.setImage(image);
+                            imageView.setImage(item.getImg());
                             imageView.setFitHeight(50); // set height
                             imageView.setFitWidth(50);  // set width
                             imageView.setPreserveRatio(true);
@@ -115,13 +109,8 @@ public class CustomerPage extends Application {
             if (selectedProduct != null) {
                 Stage specstage= new Stage();
                 Label l= new Label(selectedProduct.getDescription());
-                FileInputStream fis=null;
-                try {
-                    fis = new FileInputStream(selectedProduct.getImageURL());
-                } catch (FileNotFoundException ex) {
-                    Logger.getLogger(CustomerPage.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                ImageView img=new ImageView(new Image(fis));
+                System.out.println(selectedProduct.getDescription());
+                ImageView img=new ImageView(selectedProduct.getImg());
                 img.setPreserveRatio(true);
                 img.setFitHeight(150);
                 img.setFitWidth(200);
@@ -153,12 +142,22 @@ public class CustomerPage extends Application {
             Label passwordLabel = new Label("Password:");
             TextField passwordField = new TextField(Login_page.getUser().getPassword());
             // Add other fields like email and phone here...
+            Label PhoneLabel = new Label("Phone:");
+            TextField PhoneField = new TextField(((Customer)Login_page.getUser()).getPhone());
+            Label EmailLabel = new Label("Email:");
+            TextField EmailField = new TextField(((Customer)Login_page.getUser()).getEmail());
+            Label AddressLabel = new Label("Address:");
+            TextField AddressField = new TextField(((Customer)Login_page.getUser()).getAddress());
+            
 
             Button updateButton = new Button("Update");
             updateButton.setOnAction(ev -> {
                 try {
                     Login_page.getUser().setName(usernameField.getText());
                     Login_page.getUser().setPassword(passwordField.getText());
+                    ((Customer)Login_page.getUser()).setPhone(PhoneField.getText());
+                    ((Customer)Login_page.getUser()).setEmail(EmailField.getText());
+                    ((Customer)Login_page.getUser()).setAddress(AddressField.getText());
                     userFormStage.close();
                 } catch (EmptyStringException ex) {
                     Login_page.showAlert("user name or password can't be empty");
@@ -167,15 +166,25 @@ public class CustomerPage extends Application {
 
             // Create a grid pane and add the labels and text fields
             GridPane gridPane = new GridPane();
+            gridPane.setVgap(10);
+            gridPane.setHgap(10);
+            gridPane.setAlignment(Pos.CENTER);
+            gridPane.setPadding(new Insets(10));
             gridPane.add(usernameLabel, 0, 0);
             gridPane.add(usernameField, 1, 0);
             gridPane.add(passwordLabel, 0, 1);
             gridPane.add(passwordField, 1, 1);
-            gridPane.add(updateButton, 0, 2);
+            gridPane.add(PhoneLabel, 0, 2);
+            gridPane.add(PhoneField, 1, 2);
+            gridPane.add(EmailLabel, 0, 3);
+            gridPane.add(EmailField, 1, 3);
+            gridPane.add(AddressLabel, 0, 4);
+            gridPane.add(AddressField, 1, 4);
+            gridPane.add(updateButton, 0, 5);
             // Add other fields to the grid pane here...
 
             // Create a scene and set it on the stage
-            Scene scene = new Scene(gridPane, 300, 200);
+            Scene scene = new Scene(gridPane, 300, 300);
             userFormStage.setScene(scene);
             userFormStage.show();
         });
@@ -207,9 +216,7 @@ public class CustomerPage extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+    
 }
 
 
