@@ -53,5 +53,3 @@ public class User {
     public String getPassword() {
         return Password;
     }
-
-i will remove this
