@@ -54,14 +54,3 @@ public class User {
         return Password;
     }
 
-    @Override
-    public String toString() {
-        return "User{" + "Name=" + Name + ", ID=" + ID + '}';
-    }
-    
-    public Order getOrder() {
-        return new Order();
-    }
-    
-    public void openPage(){}
-}
